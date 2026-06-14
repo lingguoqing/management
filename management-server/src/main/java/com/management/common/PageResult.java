@@ -2,6 +2,7 @@ package com.management.common;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @Data
 public class PageResult<T> implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -5154767920072830938L;
     /** 当前页码 */
     private int page;
 

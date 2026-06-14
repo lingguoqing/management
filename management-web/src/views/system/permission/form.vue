@@ -27,7 +27,7 @@ function getInitialForm() {
     component: '',
     redirect: '',
     url: '',
-    type: 1,
+    type: 0,
     permission: '',
     permsType: '1',
     icon: '',
@@ -77,11 +77,12 @@ function initForm() {
     form.value.status = form.value.status ?? 1
     form.value.visible = form.value.visible ?? 1
   } else {
-    // 添加子级
+    // 添加子级：根据父节点类型推导子节点类型
     isEdit.value = false
     form.value = getInitialForm()
     form.value.parentId = record.parentId ?? 0
-    form.value.type = record.type === 0 ? 1 : record.type
+    // 目录(0)→菜单(1)，菜单(1)→菜单(1)，按钮(2)→按钮(2)
+    form.value.type = record.type === 0 ? 1 : record.type === 1 ? 1 : 2
   }
 }
 
@@ -137,7 +138,8 @@ async function handleSubmit() {
         </a-col>
       </a-row>
 
-      <a-row :gutter="16">
+      <!-- 路由地址 + 组件路径：菜单和按钮类型需要 -->
+      <a-row :gutter="16" v-if="form.type !== 0">
         <a-col :span="12">
           <a-form-item label="路由地址" name="path" :rules="[{ required: form.type === 1, message: '菜单类型必须填写路由地址' }]">
             <a-input v-model:value="form.path" placeholder="如: /system/user" />
@@ -150,7 +152,8 @@ async function handleSubmit() {
         </a-col>
       </a-row>
 
-      <a-row :gutter="16">
+      <!-- 重定向地址：仅目录类型显示 -->
+      <a-row :gutter="16" v-if="form.type === 0">
         <a-col :span="12">
           <a-form-item label="重定向地址" name="redirect">
             <a-input v-model:value="form.redirect" placeholder="一级菜单重定向地址" />
@@ -163,9 +166,19 @@ async function handleSubmit() {
         </a-col>
       </a-row>
 
+      <!-- 图标：目录和菜单显示 -->
+      <a-row :gutter="16" v-if="form.type === 1">
+        <a-col :span="12">
+          <a-form-item label="图标" name="icon">
+            <IconPicker v-model="form.icon" />
+          </a-form-item>
+        </a-col>
+      </a-row>
+
+      <!-- 权限标识：仅按钮类型需要 -->
       <a-row :gutter="16" v-if="form.type === 2">
         <a-col :span="24">
-          <a-form-item label="权限标识" name="permission" :rules="[{ required: form.type === 2, message: '按钮权限必须填写权限标识' }]">
+          <a-form-item label="权限标识" name="permission" :rules="[{ required: true, message: '按钮权限必须填写权限标识' }]">
             <a-input v-model:value="form.permission" placeholder="如: system:user:add" />
           </a-form-item>
         </a-col>
@@ -195,7 +208,8 @@ async function handleSubmit() {
         </a-col>
       </a-row>
 
-      <a-row :gutter="16">
+      <!-- 是否缓存、是否外链、聚合子路由：仅目录和菜单显示 -->
+      <a-row :gutter="16" v-if="form.type !== 2">
         <a-col :span="8">
           <a-form-item label="是否缓存" name="keepAlive">
             <a-select v-model:value="form.keepAlive">

@@ -71,8 +71,14 @@ function handleAdd() {
   formVisible.value = true
 }
 
-function handleEdit(record) {
-  formData.value = { ...record }
+async function handleEdit(record) {
+  // 先从数据库获取最新详情，确保角色等数据完整
+  try {
+    const res = await userApi.detail(record.id)
+    formData.value = res.data
+  } catch {
+    formData.value = { ...record }
+  }
   formVisible.value = true
 }
 

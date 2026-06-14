@@ -2,8 +2,8 @@ package com.management.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.management.dto.query.LoginLogQueryDTO;
-import com.management.entity.SysLoginLog;
+import com.management.model.dto.query.LoginLogQueryDTO;
+import com.management.model.entity.SysLoginLog;
 
 /**
  * 登录日志 Service 接口

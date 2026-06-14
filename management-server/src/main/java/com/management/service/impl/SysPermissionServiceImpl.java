@@ -5,17 +5,17 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.management.common.exception.BusinessException;
-import com.management.dto.PermissionDTO;
-import com.management.entity.SysPermission;
-import com.management.entity.SysRole;
-import com.management.entity.SysRolePermission;
+import com.management.model.dto.PermissionDTO;
+import com.management.model.entity.SysPermission;
+import com.management.model.entity.SysRole;
+import com.management.model.entity.SysRolePermission;
 import com.management.mapper.SysPermissionMapper;
 import com.management.mapper.SysRoleMapper;
 import com.management.mapper.SysRolePermissionMapper;
 import com.management.mapper.SysUserMapper;
 import com.management.service.SysPermissionService;
-import com.management.vo.MenuVO;
-import com.management.vo.PermTreeVO;
+import com.management.model.vo.MenuVO;
+import com.management.model.vo.PermTreeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,8 +120,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         // 清除角色-权限关联
         for (Long permId : idsToDelete) {
             rolePermissionMapper.delete(
-                    new LambdaQueryWrapper<com.management.entity.SysRolePermission>()
-                            .eq(com.management.entity.SysRolePermission::getPermId, permId));
+                    new LambdaQueryWrapper<SysRolePermission>()
+                            .eq(SysRolePermission::getPermId, permId));
         }
     }
 

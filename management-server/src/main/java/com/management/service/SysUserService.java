@@ -2,11 +2,11 @@ package com.management.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.management.dto.PasswordDTO;
-import com.management.dto.UserDTO;
-import com.management.dto.query.UserQueryDTO;
-import com.management.entity.SysUser;
-import com.management.vo.UserInfoVO;
+import com.management.model.dto.PasswordDTO;
+import com.management.model.dto.UserDTO;
+import com.management.model.dto.query.UserQueryDTO;
+import com.management.model.entity.SysUser;
+import com.management.model.vo.UserInfoVO;
 
 /**
  * 用户 Service 接口
@@ -30,4 +30,10 @@ public interface SysUserService extends IService<SysUser> {
 
     /** 修改密码 */
     void updatePassword(Long userId, PasswordDTO dto);
+
+    /** 修改个人资料（只能修改自己） */
+    void updateProfile(Long userId, UserDTO dto);
+
+    /** 获取用户详情（含角色ID列表） */
+    UserDTO getUserDetail(Long id);
 }

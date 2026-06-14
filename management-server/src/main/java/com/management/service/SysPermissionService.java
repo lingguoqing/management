@@ -1,9 +1,10 @@
 package com.management.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.management.dto.PermissionDTO;
-import com.management.entity.SysPermission;
-import com.management.vo.PermTreeVO;
+import com.management.model.dto.PermissionDTO;
+import com.management.model.entity.SysPermission;
+import com.management.model.vo.MenuVO;
+import com.management.model.vo.PermTreeVO;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface SysPermissionService extends IService<SysPermission> {
     List<PermTreeVO> getPermTree();
 
     /** 根据用户ID获取菜单树 */
-    List<com.management.vo.MenuVO> getMenuTreeByUserId(Long userId);
+    List<MenuVO> getMenuTreeByUserId(Long userId);
 
     /** 获取单个权限详情 */
     PermissionDTO getPermissionById(Long id);

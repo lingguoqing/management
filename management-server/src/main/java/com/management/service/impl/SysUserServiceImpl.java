@@ -1,31 +1,34 @@
 package com.management.service.impl;
 
 import cn.dev33.satoken.secure.BCrypt;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.management.common.exception.BusinessException;
-import com.management.dto.PasswordDTO;
-import com.management.dto.UserDTO;
-import com.management.dto.query.UserQueryDTO;
-import com.management.entity.*;
-import com.management.mapper.*;
+import com.management.mapper.SysDeptMapper;
+import com.management.mapper.SysUserMapper;
+import com.management.mapper.SysUserRoleMapper;
+import com.management.model.dto.PasswordDTO;
+import com.management.model.dto.UserDTO;
+import com.management.model.dto.query.UserQueryDTO;
+import com.management.model.entity.SysDept;
+import com.management.model.entity.SysUser;
+import com.management.model.entity.SysUserRole;
+import com.management.model.vo.MenuVO;
+import com.management.model.vo.UserInfoVO;
 import com.management.service.SysPermissionService;
 import com.management.service.SysUserService;
-import com.management.vo.MenuVO;
-import com.management.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -163,14 +166,56 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new BusinessException("用户不存在");
         }
 
-        // 校验旧密码
-        if (!BCrypt.checkpw(dto.getOldPassword(), user.getPassword())) {
-            throw new BusinessException("旧密码错误");
+        // 校验旧密码（如果提供了旧密码则校验）
+        if (StrUtil.isNotBlank(dto.getOldPassword())) {
+            if (!BCrypt.checkpw(dto.getOldPassword(), user.getPassword())) {
+                throw new BusinessException("旧密码错误");
+            }
         }
 
         // 更新密码
         user.setPassword(BCrypt.hashpw(dto.getNewPassword()));
         baseMapper.updateById(user);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateProfile(Long userId, UserDTO dto) {
+        SysUser user = baseMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException("用户不存在");
+        }
+
+        // 只允许修改部分字段：nickname, email, phone, gender, remark
+        if (StrUtil.isNotBlank(dto.getNickname())) {
+            user.setNickname(dto.getNickname());
+        }
+        if (dto.getEmail() != null) {
+            user.setEmail(dto.getEmail());
+        }
+        if (dto.getPhone() != null) {
+            user.setPhone(dto.getPhone());
+        }
+        if (dto.getGender() != null) {
+            user.setGender(dto.getGender());
+        }
+        if (dto.getRemark() != null) {
+            user.setRemark(dto.getRemark());
+        }
+        baseMapper.updateById(user);
+    }
+
+    @Override
+    public UserDTO getUserDetail(Long id) {
+        SysUser user = baseMapper.selectById(id);
+        if (user == null) {
+            throw new BusinessException("用户不存在");
+        }
+        UserDTO dto = BeanUtil.copyProperties(user, UserDTO.class);
+        // 查询该用户的角色ID列表
+        List<Long> roleIdList = baseMapper.selectRoleIdsByUserId(id);
+        dto.setRoleIds(roleIdList.toArray(new Long[0]));
+        return dto;
     }
 
     /**

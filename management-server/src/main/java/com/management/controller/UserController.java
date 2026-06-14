@@ -1,14 +1,13 @@
 package com.management.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.management.common.PageResult;
 import com.management.common.PageUtils;
 import com.management.common.Result;
 import com.management.common.annotation.OperLog;
-import com.management.dto.UserDTO;
-import com.management.dto.query.UserQueryDTO;
-import com.management.entity.SysUser;
+import com.management.model.dto.UserDTO;
+import com.management.model.dto.query.UserQueryDTO;
+import com.management.model.entity.SysUser;
 import com.management.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -64,7 +63,7 @@ public class UserController {
     @Operation(summary = "获取用户详情")
     @GetMapping("/{id}")
     @SaCheckPermission("sys:user:list")
-    public Result<SysUser> detail(@PathVariable Long id) {
-        return Result.ok(userService.getById(id));
+    public Result<UserDTO> detail(@PathVariable Long id) {
+        return Result.ok(userService.getUserDetail(id));
     }
 }

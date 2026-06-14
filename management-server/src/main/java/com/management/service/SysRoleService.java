@@ -2,9 +2,9 @@ package com.management.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.management.dto.RoleDTO;
-import com.management.dto.query.RoleQueryDTO;
-import com.management.entity.SysRole;
+import com.management.model.dto.RoleDTO;
+import com.management.model.dto.query.RoleQueryDTO;
+import com.management.model.entity.SysRole;
 
 import java.util.List;
 

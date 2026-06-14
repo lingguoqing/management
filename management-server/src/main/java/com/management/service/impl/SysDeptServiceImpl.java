@@ -5,16 +5,15 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.management.common.exception.BusinessException;
-import com.management.dto.DeptDTO;
-import com.management.entity.SysDept;
+import com.management.model.dto.DeptDTO;
+import com.management.model.entity.SysDept;
 import com.management.mapper.SysDeptMapper;
 import com.management.service.SysDeptService;
-import com.management.vo.DeptTreeVO;
+import com.management.model.vo.DeptTreeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

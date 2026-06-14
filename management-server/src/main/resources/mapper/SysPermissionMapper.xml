@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.management.mapper.SysPermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.management.model.entity.SysPermission">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id" />
+        <result property="name" column="name" />
+        <result property="title" column="title" />
+        <result property="enName" column="en_name" />
+        <result property="path" column="path" />
+        <result property="component" column="component" />
+        <result property="redirect" column="redirect" />
+        <result property="url" column="url" />
+        <result property="type" column="type" />
+        <result property="permission" column="permission" />
+        <result property="permsType" column="perms_type" />
+        <result property="icon" column="icon" />
+        <result property="sort" column="sort" />
+        <result property="visible" column="visible" />
+        <result property="isRoute" column="is_route" />
+        <result property="isLeaf" column="is_leaf" />
+        <result property="alwaysShow" column="always_show" />
+        <result property="keepAlive" column="keep_alive" />
+        <result property="iFrame" column="i_frame" />
+        <result property="hideTab" column="hide_tab" />
+        <result property="status" column="status" />
+        <result property="subCount" column="sub_count" />
+        <result property="description" column="description" />
+        <result property="ruleFlag" column="rule_flag" />
+        <result property="deleted" column="deleted" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,parent_id,name,title,en_name,path,
+        component,redirect,url,type,permission,
+        perms_type,icon,sort,visible,is_route,
+        is_leaf,always_show,keep_alive,i_frame,hide_tab,
+        status,sub_count,description,rule_flag,is_delete,
+        create_by,create_time,update_by,update_time
+    </sql>
+
+    <!-- 查询角色的所有权限ID -->
+    <select id="selectPermIdsByRoleId" resultType="java.lang.Long">
+        SELECT perm_id FROM sys_role_permission WHERE role_id = #{roleId}
+    </select>
+
+    <!-- 查询所有状态正常的权限，按排序号升序 -->
+    <select id="selectAllEnabled" resultMap="BaseResultMap">
+        SELECT * FROM sys_permission WHERE status = 1 AND deleted = 0 ORDER BY sort ASC
+    </select>
+
+</mapper>

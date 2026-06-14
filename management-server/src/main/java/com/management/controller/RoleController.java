@@ -1,14 +1,13 @@
 package com.management.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.management.common.PageResult;
 import com.management.common.PageUtils;
 import com.management.common.Result;
 import com.management.common.annotation.OperLog;
-import com.management.dto.RoleDTO;
-import com.management.dto.query.RoleQueryDTO;
-import com.management.entity.SysRole;
+import com.management.model.dto.RoleDTO;
+import com.management.model.dto.query.RoleQueryDTO;
+import com.management.model.entity.SysRole;
 import com.management.service.SysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

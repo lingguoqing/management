@@ -2,6 +2,7 @@ package com.management.common;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -12,6 +13,8 @@ import java.io.Serializable;
 @Data
 public class Result<T> implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -1420988967685803838L;
     /** 状态码：200-成功，其他-失败 */
     private int code;
 

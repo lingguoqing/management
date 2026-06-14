@@ -1,17 +1,16 @@
 package com.management.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.management.common.PageResult;
 import com.management.common.PageUtils;
 import com.management.common.Result;
 import com.management.common.annotation.OperLog;
-import com.management.dto.DictDataDTO;
-import com.management.dto.DictTypeDTO;
-import com.management.dto.query.DictDataQueryDTO;
-import com.management.dto.query.DictTypeQueryDTO;
-import com.management.entity.SysDictData;
-import com.management.entity.SysDictType;
+import com.management.model.dto.DictDataDTO;
+import com.management.model.dto.DictTypeDTO;
+import com.management.model.dto.query.DictDataQueryDTO;
+import com.management.model.dto.query.DictTypeQueryDTO;
+import com.management.model.entity.SysDictData;
+import com.management.model.entity.SysDictType;
 import com.management.service.SysDictDataService;
 import com.management.service.SysDictTypeService;
 import io.swagger.v3.oas.annotations.Operation;

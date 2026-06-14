@@ -2,9 +2,9 @@ package com.management.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.management.dto.DictTypeDTO;
-import com.management.dto.query.DictTypeQueryDTO;
-import com.management.entity.SysDictType;
+import com.management.model.dto.DictTypeDTO;
+import com.management.model.dto.query.DictTypeQueryDTO;
+import com.management.model.entity.SysDictType;
 
 /**
  * 字典类型 Service 接口

@@ -1,9 +1,9 @@
 package com.management.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.management.dto.DeptDTO;
-import com.management.entity.SysDept;
-import com.management.vo.DeptTreeVO;
+import com.management.model.dto.DeptDTO;
+import com.management.model.entity.SysDept;
+import com.management.model.vo.DeptTreeVO;
 
 import java.util.List;
 

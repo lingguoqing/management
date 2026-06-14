@@ -2,9 +2,9 @@ package com.management.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.management.dto.DictDataDTO;
-import com.management.dto.query.DictDataQueryDTO;
-import com.management.entity.SysDictData;
+import com.management.model.dto.DictDataDTO;
+import com.management.model.dto.query.DictDataQueryDTO;
+import com.management.model.entity.SysDictData;
 
 import java.util.List;
 

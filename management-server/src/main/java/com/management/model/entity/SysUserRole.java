@@ -1,0 +1,28 @@
+package com.management.model.entity;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+/**
+ * 用户-角色关联实体 —— 多对多中间表
+ */
+@Data
+@TableName("sys_user_role")
+public class SysUserRole implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -5746063611373016152L;
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
+
+    /** 用户ID */
+    private Long userId;
+
+    /** 角色ID */
+    private Long roleId;
+}

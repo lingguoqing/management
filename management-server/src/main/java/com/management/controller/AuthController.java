@@ -7,14 +7,15 @@ import cn.hutool.http.useragent.UserAgentUtil;
 import com.management.common.Result;
 import com.management.common.annotation.OperLog;
 import com.management.common.exception.BusinessException;
-import com.management.dto.LoginDTO;
-import com.management.dto.PasswordDTO;
-import com.management.entity.SysLoginLog;
-import com.management.entity.SysUser;
+import com.management.model.dto.LoginDTO;
+import com.management.model.dto.PasswordDTO;
+import com.management.model.dto.UserDTO;
+import com.management.model.entity.SysLoginLog;
+import com.management.model.entity.SysUser;
 import com.management.service.SysLoginLogService;
 import com.management.service.SysUserService;
-import com.management.vo.LoginVO;
-import com.management.vo.UserInfoVO;
+import com.management.model.vo.LoginVO;
+import com.management.model.vo.UserInfoVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -128,6 +129,15 @@ public class AuthController {
     public Result<Void> updatePassword(@Valid @RequestBody PasswordDTO dto) {
         Long userId = StpUtil.getLoginIdAsLong();
         userService.updatePassword(userId, dto);
+        return Result.ok();
+    }
+
+    @Operation(summary = "修改个人资料")
+    @OperLog(module = "系统管理", operation = "修改个人资料")
+    @PutMapping("/profile")
+    public Result<Void> updateProfile(@Valid @RequestBody UserDTO dto) {
+        Long userId = StpUtil.getLoginIdAsLong();
+        userService.updateProfile(userId, dto);
         return Result.ok();
     }
 }

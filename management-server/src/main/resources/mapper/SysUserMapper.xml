@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.management.mapper.SysUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.management.model.entity.SysUser">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="nickname" column="nickname" />
+        <result property="avatar" column="avatar" />
+        <result property="email" column="email" />
+        <result property="phone" column="phone" />
+        <result property="gender" column="gender" />
+        <result property="deptId" column="dept_id" />
+        <result property="status" column="status" />
+        <result property="remark" column="remark" />
+        <result property="lastLoginTime" column="last_login_time" />
+        <result property="lastLoginIp" column="last_login_ip" />
+        <result property="deleted" column="deleted" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,password,nickname,avatar,email,
+        phone,gender,dept_id,status,remark,
+        last_login_time,last_login_ip,deleted,create_time,update_time
+    </sql>
+
+    <!-- 查询用户的所有角色编码 -->
+    <select id="selectRoleCodesByUserId" resultType="java.lang.String">
+        SELECT r.role_code FROM sys_role r
+        INNER JOIN sys_user_role ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId} AND r.status = 1 AND r.deleted = 0
+    </select>
+
+    <!-- 查询用户的所有角色ID -->
+    <select id="selectRoleIdsByUserId" resultType="java.lang.Long">
+        SELECT r.id FROM sys_role r
+        INNER JOIN sys_user_role ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId} AND r.status = 1 AND r.deleted = 0
+    </select>
+
+    <!-- 查询用户的全部权限标识（含菜单+按钮） -->
+    <select id="selectPermsByUserId" resultType="java.lang.String">
+        SELECT DISTINCT p.permission FROM sys_permission p
+        INNER JOIN sys_role_permission rp ON p.id = rp.perm_id
+        INNER JOIN sys_user_role ur ON rp.role_id = ur.role_id
+        WHERE ur.user_id = #{userId}
+          AND p.status = 1 AND p.deleted = 0
+          AND p.permission IS NOT NULL AND p.permission != ''
+    </select>
+
+    <!-- 查询用户的菜单权限（仅目录+菜单，不含按钮），递归包含所有父节点 -->
+    <select id="selectMenusByUserId" resultType="com.management.model.entity.SysPermission">
+        WITH RECURSIVE menu_tree AS (
+            SELECT p.* FROM sys_permission p
+            INNER JOIN sys_role_permission rp ON p.id = rp.perm_id
+            INNER JOIN sys_user_role ur ON rp.role_id = ur.role_id
+            WHERE ur.user_id = #{userId}
+              AND p.status = 1 AND p.deleted = 0
+              AND p.type IN (0, 1) AND p.visible = 1
+            UNION
+            SELECT p.* FROM sys_permission p
+            INNER JOIN menu_tree mt ON p.id = mt.parent_id
+            WHERE p.status = 1 AND p.deleted = 0
+              AND p.type IN (0, 1) AND p.visible = 1
+        )
+        SELECT DISTINCT * FROM menu_tree ORDER BY sort ASC
+    </select>
+
+</mapper>

@@ -1,14 +1,13 @@
 package com.management.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.management.common.PageResult;
 import com.management.common.PageUtils;
 import com.management.common.Result;
-import com.management.dto.query.LoginLogQueryDTO;
-import com.management.dto.query.OperationLogQueryDTO;
-import com.management.entity.SysOperationLog;
-import com.management.entity.SysLoginLog;
+import com.management.model.dto.query.LoginLogQueryDTO;
+import com.management.model.dto.query.OperationLogQueryDTO;
+import com.management.model.entity.SysOperationLog;
+import com.management.model.entity.SysLoginLog;
 import com.management.service.SysOperationLogService;
 import com.management.service.SysLoginLogService;
 import io.swagger.v3.oas.annotations.Operation;

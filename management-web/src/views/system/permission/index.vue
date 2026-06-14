@@ -32,7 +32,12 @@ async function fetchTree() {
 }
 
 function handleAdd(parent) {
-  formData.value = parent ? { parentId: parent.id, type: parent.type === 0 ? 1 : 1 } : null
+  // 根据父节点类型推导子节点类型：目录→菜单，菜单→按钮
+  let defaultType = 0 // 根节点默认目录
+  if (parent) {
+    defaultType = parent.type === 0 ? 1 : parent.type === 1 ? 2 : 2
+  }
+  formData.value = parent ? { parentId: parent.id, type: defaultType } : null
   formVisible.value = true
 }
 

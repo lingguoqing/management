@@ -2,6 +2,8 @@ package com.management.common;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.util.List;
+
 /**
  * 分页结果转换工具类
  */
@@ -15,7 +17,7 @@ public class PageUtils {
                 (int) page.getCurrent(),
                 (int) page.getSize(),
                 (int) page.getTotal(),
-                (java.util.List<T>) page.getRecords()
+                (List<T>) page.getRecords()
         );
     }
 }

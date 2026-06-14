@@ -1,11 +1,9 @@
 package com.management.config;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.http.useragent.UserAgent;
-import cn.hutool.http.useragent.UserAgentUtil;
 import cn.hutool.json.JSONUtil;
 import com.management.common.annotation.OperLog;
-import com.management.entity.SysOperationLog;
+import com.management.model.entity.SysOperationLog;
 import com.management.service.SysOperationLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +13,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 /**
  * AOP aspect — intercepts @OperLog methods and records operation logs to the database

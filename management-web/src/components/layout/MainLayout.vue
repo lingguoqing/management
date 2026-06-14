@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
 import { authApi } from '@/api/auth'
 import { resetRoutes } from '@/router/dynamic-routes'
+import ProfileModal from './ProfileModal.vue'
 import {
   DashboardOutlined,
   SettingOutlined,
@@ -50,6 +51,7 @@ const appStore = useAppStore()
 
 const selectedKeys = ref([])
 const openKeys = ref([])
+const profileVisible = ref(false)
 
 // 图标映射表
 const iconMap = {
@@ -215,6 +217,10 @@ function toggleCollapse() {
             </div>
             <template #overlay>
               <a-menu>
+                <a-menu-item key="profile" @click="profileVisible = true">
+                  <UserOutlined />
+                  个人信息
+                </a-menu-item>
                 <a-menu-item key="logout" @click="handleLogout">
                   <LogoutOutlined />
                   退出登录
@@ -230,6 +236,9 @@ function toggleCollapse() {
         <router-view />
       </a-layout-content>
     </a-layout>
+
+    <!-- 个人信息弹窗 -->
+    <ProfileModal v-if="profileVisible" v-model:visible="profileVisible" @success="userStore.fetchUserInfo()" />
   </a-layout>
 </template>
 

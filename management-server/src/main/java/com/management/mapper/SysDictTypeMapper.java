@@ -1,7 +1,7 @@
 package com.management.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.management.entity.SysDictType;
+import com.management.model.entity.SysDictType;
 
 /**
  * 字典类型 Mapper

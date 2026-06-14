@@ -21,4 +21,9 @@ export const authApi = {
   updatePassword(data) {
     return request.put('/auth/password', data)
   },
+
+  /** 修改个人资料 */
+  updateProfile(data) {
+    return request.put('/auth/profile', data)
+  },
 }
