@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Tag(name = "日志管理")
 @RestController
-@RequestMapping("/api/log")
+@RequestMapping("log")
 @RequiredArgsConstructor
 public class LogController {
 

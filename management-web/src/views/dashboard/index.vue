@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { dashboardApi } from '@/api/dashboard'
 import {
   UserOutlined,
   TeamOutlined,
@@ -9,12 +10,29 @@ import {
 } from '@ant-design/icons-vue'
 
 const userStore = useUserStore()
+const loading = ref(false)
 const stats = ref([
-  { title: '用户总数', value: 128, icon: UserOutlined, color: '#1a1a2e' },
-  { title: '角色数量', value: 12, icon: TeamOutlined, color: '#4f46e5' },
-  { title: '菜单数量', value: 36, icon: MenuOutlined, color: '#0891b2' },
-  { title: '今日操作', value: 2536, icon: FileTextOutlined, color: '#059669' },
+  { title: '用户总数', value: 0, icon: UserOutlined, color: '#1a1a2e' },
+  { title: '角色数量', value: 0, icon: TeamOutlined, color: '#4f46e5' },
+  { title: '菜单数量', value: 0, icon: MenuOutlined, color: '#0891b2' },
+  { title: '今日操作', value: 0, icon: FileTextOutlined, color: '#059669' },
 ])
+
+onMounted(async () => {
+  loading.value = true
+  try {
+    const res = await dashboardApi.stats()
+    const data = res.data
+    stats.value[0].value = data.userCount ?? 0
+    stats.value[1].value = data.roleCount ?? 0
+    stats.value[2].value = data.permCount ?? 0
+    stats.value[3].value = data.todayOperationCount ?? 0
+  } catch {
+    // ignore
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
 <template>

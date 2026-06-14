@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
  */
 @Tag(name = "认证管理")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("auth")
 @RequiredArgsConstructor
 public class AuthController {
 

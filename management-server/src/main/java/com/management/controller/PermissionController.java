@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Tag(name = "菜单管理")
 @RestController
-@RequestMapping("/api/permission")
+@RequestMapping("permission")
 @RequiredArgsConstructor
 public class PermissionController {
 
