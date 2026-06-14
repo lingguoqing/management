@@ -3,7 +3,7 @@ package com.management.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.management.dto.DictDataDTO;
-import com.management.dto.QueryDTO;
+import com.management.dto.query.DictDataQueryDTO;
 import com.management.entity.SysDictData;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public interface SysDictDataService extends IService<SysDictData> {
 
     /** 分页查询 */
-    IPage<SysDictData> pageDictData(QueryDTO query);
+    IPage<SysDictData> pageDictData(DictDataQueryDTO query);
 
     /** 按字典类型查询 */
     List<SysDictData> listByDictType(String dictType);

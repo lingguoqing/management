@@ -12,8 +12,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.management.common.exception.BusinessException;
 import com.management.dto.PasswordDTO;
-import com.management.dto.QueryDTO;
 import com.management.dto.UserDTO;
+import com.management.dto.query.UserQueryDTO;
 import com.management.entity.*;
 import com.management.mapper.*;
 import com.management.service.SysPermissionService;
@@ -40,7 +40,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private final SysDeptMapper deptMapper;
 
     @Override
-    public IPage<SysUser> pageUsers(QueryDTO query) {
+    public IPage<SysUser> pageUsers(UserQueryDTO query) {
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         // 关键字搜索：用户名 / 昵称 / 手机号
         if (StrUtil.isNotBlank(query.getKeyword())) {

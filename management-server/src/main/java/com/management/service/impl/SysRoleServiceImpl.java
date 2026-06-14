@@ -1,5 +1,6 @@
 package com.management.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.StrUtil;
@@ -8,12 +9,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.management.common.exception.BusinessException;
-import com.management.dto.QueryDTO;
 import com.management.dto.RoleDTO;
+import com.management.dto.query.RoleQueryDTO;
 import com.management.entity.SysRole;
 import com.management.entity.SysRolePermission;
 import com.management.mapper.SysRoleMapper;
 import com.management.mapper.SysRolePermissionMapper;
+import com.management.mapper.SysUserRoleMapper;
 import com.management.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,9 +33,10 @@ import java.util.stream.Collectors;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
 
     private final SysRolePermissionMapper rolePermissionMapper;
+    private final SysUserRoleMapper userRoleMapper;
 
     @Override
-    public IPage<SysRole> pageRoles(QueryDTO query) {
+    public IPage<SysRole> pageRoles(RoleQueryDTO query) {
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotBlank(query.getKeyword())) {
             wrapper.like(SysRole::getRoleName, query.getKeyword())
@@ -97,6 +100,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void assignPermissions(Long roleId, Long[] permIds) {
         rolePermissionMapper.deleteByRoleId(roleId);
         saveRolePermissions(roleId, permIds);
+        // 踢出该角色下的所有在线用户，强制重新登录以刷新权限
+        List<Long> userIds = userRoleMapper.selectUserIdsByRoleId(roleId);
+        for (Long userId : userIds) {
+            try {
+                StpUtil.kickout(userId);
+            } catch (Exception ignored) {
+                // 用户不在线，跳过
+            }
+        }
     }
 
     @Override

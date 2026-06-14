@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 /**
@@ -17,6 +18,8 @@ import java.time.LocalDateTime;
 @TableName("sys_user")
 public class SysUser extends BaseEntity {
 
+    @Serial
+    private static final long serialVersionUID = -2620938271140412592L;
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 

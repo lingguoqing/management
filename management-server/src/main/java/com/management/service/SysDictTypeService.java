@@ -3,7 +3,7 @@ package com.management.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.management.dto.DictTypeDTO;
-import com.management.dto.QueryDTO;
+import com.management.dto.query.DictTypeQueryDTO;
 import com.management.entity.SysDictType;
 
 /**
@@ -12,7 +12,7 @@ import com.management.entity.SysDictType;
 public interface SysDictTypeService extends IService<SysDictType> {
 
     /** 分页查询 */
-    IPage<SysDictType> pageDictTypes(QueryDTO query);
+    IPage<SysDictType> pageDictTypes(DictTypeQueryDTO query);
 
     /** 新增 */
     void createDictType(DictTypeDTO dto);

@@ -159,22 +159,22 @@ function toggleCollapse() {
             <template #icon>
               <component :is="iconMap[menu.icon]" v-if="menu.icon && iconMap[menu.icon]" />
             </template>
-            <template #title>{{ menu.permName }}</template>
+            <template #title>{{ menu.title }}</template>
             <template v-for="child in menu.children" :key="child.id">
               <a-sub-menu v-if="child.children && child.children.length" :key="child.path || String(child.id)">
                 <template #icon>
                   <component :is="iconMap[child.icon]" v-if="child.icon && iconMap[child.icon]" />
                 </template>
-                <template #title>{{ child.permName }}</template>
+                <template #title>{{ child.title }}</template>
                 <a-menu-item v-for="sub in child.children" :key="sub.path || String(sub.id)">
-                  {{ sub.permName }}
+                  {{ sub.title }}
                 </a-menu-item>
               </a-sub-menu>
               <a-menu-item v-else :key="child.path || String(child.id)">
                 <template #icon>
                   <component :is="iconMap[child.icon]" v-if="child.icon && iconMap[child.icon]" />
                 </template>
-                {{ child.permName }}
+                {{ child.title }}
               </a-menu-item>
             </template>
           </a-sub-menu>
@@ -182,7 +182,7 @@ function toggleCollapse() {
             <template #icon>
               <component :is="iconMap[menu.icon]" v-if="menu.icon && iconMap[menu.icon]" />
             </template>
-            {{ menu.permName }}
+            {{ menu.title }}
           </a-menu-item>
         </template>
       </a-menu>

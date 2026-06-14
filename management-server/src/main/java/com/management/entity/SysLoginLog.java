@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 @TableName("sys_login_log")
 public class SysLoginLog implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 8138462911168777944L;
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 

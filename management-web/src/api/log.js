@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export const logApi = {
   // ---- 操作日志 ----
   pageOperation(params) {
-    return request.get('/log/operation/page', { params })
+    return request.post('/log/operation/page', params)
   },
   clearOperation() {
     return request.delete('/log/operation')
@@ -12,7 +12,7 @@ export const logApi = {
 
   // ---- 登录日志 ----
   pageLogin(params) {
-    return request.get('/log/login/page', { params })
+    return request.post('/log/login/page', params)
   },
   clearLogin() {
     return request.delete('/log/login')

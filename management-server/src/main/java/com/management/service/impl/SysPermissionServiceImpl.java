@@ -17,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -55,12 +56,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createPermission(PermissionDTO dto) {
-        // 按钮类型必须有权限标识
-        if (dto.getPermType() == 3 && (dto.getPermCode() == null || dto.getPermCode().isBlank())) {
+        // 按钮类型（type=2）必须有权限标识
+        if (dto.getType() == 2 && (dto.getPermission() == null || dto.getPermission().isBlank())) {
             throw new BusinessException("按钮权限必须填写权限标识");
         }
-        // 菜单类型必须有路由路径
-        if (dto.getPermType() == 2 && (dto.getPath() == null || dto.getPath().isBlank())) {
+        // 菜单类型（type=1）必须有路由路径
+        if (dto.getType() == 1 && (dto.getPath() == null || dto.getPath().isBlank())) {
             throw new BusinessException("菜单类型必须填写路由路径");
         }
 
@@ -118,7 +119,18 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return all.stream()
                 .filter(p -> p.getParentId().equals(parentId))
                 .map(p -> {
-                    PermTreeVO vo = BeanUtil.copyProperties(p, PermTreeVO.class);
+                    PermTreeVO vo = new PermTreeVO();
+                    vo.setId(p.getId());
+                    vo.setParentId(p.getParentId());
+                    vo.setName(p.getName());
+                    vo.setTitle(p.getTitle());
+                    vo.setEnName(p.getEnName());
+                    vo.setType(p.getType());
+                    vo.setPermission(p.getPermission());
+                    vo.setIcon(p.getIcon());
+                    vo.setSort(p.getSort());
+                    vo.setVisible(p.getVisible());
+                    vo.setStatus(p.getStatus());
                     vo.setChildren(buildPermTree(all, p.getId()));
                     return vo;
                 })
@@ -130,7 +142,23 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return all.stream()
                 .filter(p -> p.getParentId().equals(parentId))
                 .map(p -> {
-                    MenuVO vo = BeanUtil.copyProperties(p, MenuVO.class);
+                    MenuVO vo = new MenuVO();
+                    vo.setId(p.getId());
+                    vo.setParentId(p.getParentId());
+                    vo.setName(p.getName());
+                    vo.setTitle(p.getTitle());
+                    vo.setPath(p.getPath());
+                    vo.setComponent(p.getComponent());
+                    vo.setRedirect(p.getRedirect());
+                    vo.setIcon(p.getIcon());
+                    vo.setType(p.getType());
+                    vo.setPermission(p.getPermission());
+                    vo.setVisible(p.getVisible());
+                    vo.setKeepAlive(p.getKeepAlive());
+                    vo.setIFrame(p.getIFrame());
+                    vo.setHideTab(p.getHideTab());
+                    vo.setAlwaysShow(p.getAlwaysShow());
+                    vo.setSort(p.getSort());
                     vo.setChildren(buildMenuTree(all, p.getId()));
                     return vo;
                 })

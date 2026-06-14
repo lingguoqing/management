@@ -11,11 +11,9 @@ const { t } = useI18n()
 const loading = ref(false)
 const treeData = ref([])
 const expandedKeys = ref([])
-const selectedRowKeys = ref([])
 
 const formVisible = ref(false)
 const formData = ref(null)
-const selectedPerm = ref(null)
 
 onMounted(() => fetchTree())
 
@@ -31,7 +29,7 @@ async function fetchTree() {
 }
 
 function handleAdd(parent) {
-  formData.value = parent ? { parentId: parent.id, permType: parent.permType === 1 ? 2 : 2 } : null
+  formData.value = parent ? { parentId: parent.id, type: parent.type === 0 ? 1 : 1 } : null
   formVisible.value = true
 }
 
@@ -55,20 +53,21 @@ async function handleDelete(id) {
 
 function getTypeTag(type) {
   const map = {
-    1: { color: 'blue', text: '目录' },
-    2: { color: 'green', text: '菜单' },
-    3: { color: 'orange', text: '按钮' },
+    0: { color: 'blue', text: '目录' },
+    1: { color: 'green', text: '菜单' },
+    2: { color: 'orange', text: '按钮' },
   }
   return map[type] || { color: 'default', text: '未知' }
 }
 
 const columns = [
-  { title: '权限名称', dataIndex: 'permName', key: 'permName' },
-  { title: '权限标识', dataIndex: 'permCode', key: 'permCode' },
-  { title: '类型', dataIndex: 'permType', key: 'permType', width: 80 },
-  { title: '路由路径', dataIndex: 'path', key: 'path' },
+  { title: '菜单标题', dataIndex: 'title', key: 'title' },
+  { title: '路由名称', dataIndex: 'name', key: 'name' },
+  { title: '权限标识', dataIndex: 'permission', key: 'permission' },
+  { title: '类型', dataIndex: 'type', key: 'type', width: 80 },
+  { title: '路由地址', dataIndex: 'path', key: 'path' },
   { title: '组件路径', dataIndex: 'component', key: 'component' },
-  { title: '排序', dataIndex: 'sortOrder', key: 'sortOrder', width: 60 },
+  { title: '排序', dataIndex: 'sort', key: 'sort', width: 60 },
   { title: '状态', dataIndex: 'status', key: 'status', width: 80 },
   { title: t('common.action'), key: 'action', width: 200 },
 ]
@@ -93,9 +92,9 @@ const columns = [
         :pagination="false"
       >
         <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'permType'">
-            <a-tag :color="getTypeTag(record.permType).color">
-              {{ getTypeTag(record.permType).text }}
+          <template v-if="column.key === 'type'">
+            <a-tag :color="getTypeTag(record.type).color">
+              {{ getTypeTag(record.type).text }}
             </a-tag>
           </template>
           <template v-if="column.key === 'status'">
@@ -105,7 +104,7 @@ const columns = [
           </template>
           <template v-if="column.key === 'action'">
             <div class="action-buttons">
-              <a-button v-if="record.permType !== 3" type="link" size="small" @click="handleAdd(record)">
+              <a-button v-if="record.type !== 2" type="link" size="small" @click="handleAdd(record)">
                 添加子级
               </a-button>
               <a-button type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>

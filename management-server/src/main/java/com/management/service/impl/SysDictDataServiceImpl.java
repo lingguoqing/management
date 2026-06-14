@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.management.common.exception.BusinessException;
 import com.management.dto.DictDataDTO;
-import com.management.dto.QueryDTO;
+import com.management.dto.query.DictDataQueryDTO;
 import com.management.entity.SysDictData;
 import com.management.mapper.SysDictDataMapper;
 import com.management.service.SysDictDataService;
@@ -24,7 +24,7 @@ import java.util.List;
 public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictData> implements SysDictDataService {
 
     @Override
-    public IPage<SysDictData> pageDictData(QueryDTO query) {
+    public IPage<SysDictData> pageDictData(DictDataQueryDTO query) {
         LambdaQueryWrapper<SysDictData> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotBlank(query.getKeyword())) {
             wrapper.like(SysDictData::getDictLabel, query.getKeyword());

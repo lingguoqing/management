@@ -34,10 +34,10 @@ export function addDynamicRoutes(router, menus) {
 
   function process(items) {
     for (const item of items) {
-      // Directory (permType=1): add redirect route
-      if (item.permType === 1 && item.path) {
-        const firstChild = item.children?.find((c) => c.permType === 2 && c.path)
-        const routeName = item.permName
+      // Directory (type=0): add redirect route
+      if (item.type === 0 && item.path) {
+        const firstChild = item.children?.find((c) => c.type === 1 && c.path)
+        const routeName = item.name || String(item.id)
         if (!router.hasRoute(routeName)) {
           // 找到有效的子菜单路径才添加重定向路由
           if (firstChild?.path && firstChild.path !== item.path) {
@@ -51,9 +51,9 @@ export function addDynamicRoutes(router, menus) {
           // 如果没有有效子菜单，不添加路由（避免点击时报错）
         }
       }
-      // Menu (permType=2): add page route
-      if (item.permType === 2 && item.component) {
-        const routeName = item.permName
+      // Menu (type=1): add page route
+      if (item.type === 1 && item.component) {
+        const routeName = item.name || String(item.id)
         // 自动根据后端 component 路径解析组件
         const component = resolveComponent(item.component)
         if (!router.hasRoute(routeName)) {
@@ -62,8 +62,8 @@ export function addDynamicRoutes(router, menus) {
             name: routeName,
             component: component,
             meta: {
-              title: item.permName,
-              permission: item.permCode,
+              title: item.title,
+              permission: item.permission,
               icon: item.icon,
               keepAlive: item.keepAlive === 1,
             },

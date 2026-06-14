@@ -24,7 +24,7 @@ const formVisible = ref(false)
 const formData = ref(null)
 
 const permVisible = ref(false)
-const permRoleId = ref(0)
+const permRoleId = ref(null)
 
 onMounted(() => fetchList())
 
@@ -61,7 +61,8 @@ async function handleDelete(id) {
 }
 
 function handleAssignPerm(record) {
-  permRoleId.value = record.id
+  // 保持为字符串，避免大数字精度丢失
+  permRoleId.value = String(record.id)
   permVisible.value = true
 }
 

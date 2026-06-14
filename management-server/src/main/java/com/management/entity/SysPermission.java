@@ -6,49 +6,152 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * 权限 / 菜单实体 —— 通过 parent_id 构建菜单树
- * perm_type: 1-目录 2-菜单 3-按钮
- * 按钮权限由 perm_code 标识（如 sys:user:add）
- */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@TableName("sys_permission")
-public class SysPermission extends BaseEntity {
+import java.io.Serial;
+import java.io.Serializable;
 
-    @TableId(type = IdType.ASSIGN_ID)
+/**
+ * 菜单权限表
+ * @TableName sys_permission
+ */
+@EqualsAndHashCode(callSuper = true)
+@TableName(value ="sys_permission")
+@Data
+public class SysPermission extends BaseEntity implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 6387369911402103199L;
+    /**
+     * 菜单ID
+     */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 父权限ID（0=顶级） */
+    /**
+     * 父菜单ID（0为根）
+     */
     private Long parentId;
 
-    /** 权限名称 */
-    private String permName;
+    /**
+     * 路由名称/组件名（前端keep-alive按此缓存）
+     */
+    private String name;
 
-    /** 权限标识（如 sys:user:add），按钮权限必填 */
-    private String permCode;
+    /**
+     * 菜单显示标题（侧边栏/面包屑/i18n key）
+     */
+    private String title;
 
-    /** 类型：1-目录 2-菜单 3-按钮 */
-    private Integer permType;
+    /**
+     * 英文标题/i18n键
+     */
+    private String enName;
 
-    /** 路由路径（菜单类型必填） */
+    /**
+     * 路由地址，如 system/user
+     */
     private String path;
 
-    /** 前端组件路径（菜单类型必填） */
+    /**
+     * 前端组件路径，如 system/user/index；Layout 表示父布局
+     */
     private String component;
 
-    /** 菜单图标（Ant Design 图标名称） */
+    /**
+     * 一级菜单重定向地址
+     */
+    private String redirect;
+
+    /**
+     * 后端接口路径（兼容旧版本）
+     */
+    private String url;
+
+    /**
+     * 菜单类型：0=目录 1=菜单 2=按钮
+     */
+    private Integer type;
+
+    /**
+     * 权限标识，如 system:user:add
+     */
+    private String permission;
+
+    /**
+     * 权限策略：1=可见 2=禁用（按钮级）
+     */
+    private String permsType;
+
+    /**
+     * 菜单图标（iconfont / svg / 组件名）
+     */
     private String icon;
 
-    /** 排序号 */
-    private Integer sortOrder;
+    /**
+     * 排序值，越小越靠前
+     */
+    private Integer sort;
 
-    /** 是否可见：0-隐藏 1-显示 */
+    /**
+     * 是否显示：0=隐藏 1=显示
+     */
     private Integer visible;
 
-    /** 是否缓存（keep-alive）：0-否 1-是 */
+    /**
+     * 是否注册为路由：0=否 1=是
+     */
+    private Integer isRoute;
+
+    /**
+     * 是否叶子节点：0=否 1=是
+     */
+    private Integer isLeaf;
+
+    /**
+     * 聚合子路由：0=否 1=是
+     */
+    private Integer alwaysShow;
+
+    /**
+     * 是否缓存页面：0=否 1=是
+     */
     private Integer keepAlive;
 
-    /** 状态：0-停用 1-正常 */
+    /**
+     * 是否外链：0=内部 1=外部打开
+     */
+    private Integer iFrame;
+
+    /**
+     * 是否隐藏tab：0=否 1=是
+     */
+    private Integer hideTab;
+
+    /**
+     * 菜单/按钮状态：0=停用 1=启用
+     */
     private Integer status;
+
+    /**
+     * 子菜单数（冗余，避免COUNT）
+     */
+    private Integer subCount;
+
+    /**
+     * 备注/描述
+     */
+    private String description;
+
+    /**
+     * 是否带数据权限：0=否 1=是
+     */
+    private Integer ruleFlag;
+
+    /**
+     * 创建人
+     */
+    private String createBy;
+
+    /**
+     * 更新人
+     */
+    private String updateBy;
 }

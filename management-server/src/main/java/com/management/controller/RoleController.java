@@ -3,10 +3,11 @@ package com.management.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.management.common.PageResult;
+import com.management.common.PageUtils;
 import com.management.common.Result;
 import com.management.common.annotation.OperLog;
-import com.management.dto.QueryDTO;
 import com.management.dto.RoleDTO;
+import com.management.dto.query.RoleQueryDTO;
 import com.management.entity.SysRole;
 import com.management.service.SysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,11 +30,10 @@ public class RoleController {
     private final SysRoleService roleService;
 
     @Operation(summary = "分页查询角色列表")
-    @GetMapping("/page")
+    @PostMapping("/page")
     @SaCheckPermission("sys:role:list")
-    public Result<PageResult<SysRole>> page(QueryDTO query) {
-        IPage<SysRole> page = roleService.pageRoles(query);
-        return Result.ok(PageResult.of((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(), page.getRecords()));
+    public Result<PageResult<SysRole>> page(@RequestBody RoleQueryDTO query) {
+        return Result.ok(PageUtils.convert(roleService.pageRoles(query)));
     }
 
     @Operation(summary = "新增角色")

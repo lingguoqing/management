@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.management.dto.QueryDTO;
+import com.management.dto.query.LoginLogQueryDTO;
 import com.management.entity.SysLoginLog;
 import com.management.mapper.SysLoginLogMapper;
 import com.management.service.SysLoginLogService;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class SysLoginLogServiceImpl extends ServiceImpl<SysLoginLogMapper, SysLoginLog> implements SysLoginLogService {
 
     @Override
-    public IPage<SysLoginLog> pageLogs(QueryDTO query) {
+    public IPage<SysLoginLog> pageLogs(LoginLogQueryDTO query) {
         LambdaQueryWrapper<SysLoginLog> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotBlank(query.getKeyword())) {
             wrapper.like(SysLoginLog::getUsername, query.getKeyword());

@@ -23,10 +23,10 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     /**
      * 查询用户的全部权限标识（含菜单+按钮）
      */
-    @Select("SELECT DISTINCT p.perm_code FROM sys_permission p " +
+    @Select("SELECT DISTINCT p.permission FROM sys_permission p " +
             "INNER JOIN sys_role_permission rp ON p.id = rp.perm_id " +
             "INNER JOIN sys_user_role ur ON rp.role_id = ur.role_id " +
-            "WHERE ur.user_id = #{userId} AND p.status = 1 AND p.deleted = 0 AND p.perm_code IS NOT NULL AND p.perm_code != ''")
+            "WHERE ur.user_id = #{userId} AND p.status = 1 AND p.deleted = 0 AND p.permission IS NOT NULL AND p.permission != ''")
     List<String> selectPermsByUserId(@Param("userId") Long userId);
 
     /**
@@ -36,7 +36,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
             "INNER JOIN sys_role_permission rp ON p.id = rp.perm_id " +
             "INNER JOIN sys_user_role ur ON rp.role_id = ur.role_id " +
             "WHERE ur.user_id = #{userId} AND p.status = 1 AND p.deleted = 0 " +
-            "AND p.perm_type IN (1, 2) AND p.visible = 1 " +
-            "ORDER BY p.sort_order ASC")
+            "AND p.type IN (0, 1) AND p.visible = 1 " +
+            "ORDER BY p.sort ASC")
     List<com.management.entity.SysPermission> selectMenusByUserId(@Param("userId") Long userId);
 }

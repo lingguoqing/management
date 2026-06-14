@@ -3,11 +3,13 @@ package com.management.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.management.common.PageResult;
+import com.management.common.PageUtils;
 import com.management.common.Result;
 import com.management.common.annotation.OperLog;
 import com.management.dto.DictDataDTO;
 import com.management.dto.DictTypeDTO;
-import com.management.dto.QueryDTO;
+import com.management.dto.query.DictDataQueryDTO;
+import com.management.dto.query.DictTypeQueryDTO;
 import com.management.entity.SysDictData;
 import com.management.entity.SysDictType;
 import com.management.service.SysDictDataService;
@@ -35,11 +37,10 @@ public class DictController {
     // ---- 字典类型 ----
 
     @Operation(summary = "分页查询字典类型")
-    @GetMapping("/type/page")
+    @PostMapping("/type/page")
     @SaCheckPermission("sys:dict:list")
-    public Result<PageResult<SysDictType>> pageTypes(QueryDTO query) {
-        IPage<SysDictType> page = dictTypeService.pageDictTypes(query);
-        return Result.ok(PageResult.of((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(), page.getRecords()));
+    public Result<PageResult<SysDictType>> pageTypes(@RequestBody DictTypeQueryDTO query) {
+        return Result.ok(PageUtils.convert(dictTypeService.pageDictTypes(query)));
     }
 
     @Operation(summary = "新增字典类型")
@@ -72,11 +73,10 @@ public class DictController {
     // ---- 字典数据 ----
 
     @Operation(summary = "分页查询字典数据")
-    @GetMapping("/data/page")
+    @PostMapping("/data/page")
     @SaCheckPermission("sys:dict:list")
-    public Result<PageResult<SysDictData>> pageData(QueryDTO query) {
-        IPage<SysDictData> page = dictDataService.pageDictData(query);
-        return Result.ok(PageResult.of((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(), page.getRecords()));
+    public Result<PageResult<SysDictData>> pageData(@RequestBody DictDataQueryDTO query) {
+        return Result.ok(PageUtils.convert(dictDataService.pageDictData(query)));
     }
 
     @Operation(summary = "根据字典类型查询字典数据")

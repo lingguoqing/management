@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 @Data
 public abstract class BaseEntity implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -3121076589323006787L;
     /** 逻辑删除：0-未删除 1-已删除 */
     @TableLogic
     @TableField(fill = FieldFill.INSERT)

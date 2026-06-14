@@ -3,10 +3,11 @@ package com.management.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.management.common.PageResult;
+import com.management.common.PageUtils;
 import com.management.common.Result;
 import com.management.common.annotation.OperLog;
-import com.management.dto.QueryDTO;
 import com.management.dto.UserDTO;
+import com.management.dto.query.UserQueryDTO;
 import com.management.entity.SysUser;
 import com.management.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,11 +28,10 @@ public class UserController {
     private final SysUserService userService;
 
     @Operation(summary = "分页查询用户列表")
-    @GetMapping("/page")
+    @PostMapping("/page")
     @SaCheckPermission("sys:user:list")
-    public Result<PageResult<SysUser>> page(QueryDTO query) {
-        IPage<SysUser> page = userService.pageUsers(query);
-        return Result.ok(PageResult.of((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(), page.getRecords()));
+    public Result<PageResult<SysUser>> page(@RequestBody UserQueryDTO query) {
+        return Result.ok(PageUtils.convert(userService.pageUsers(query)));
     }
 
     @Operation(summary = "新增用户")

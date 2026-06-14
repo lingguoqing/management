@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export const userApi = {
   /** 分页查询 */
   page(params) {
-    return request.get('/user/page', { params })
+    return request.post('/user/page', params)
   },
 
   /** 获取用户详情 */

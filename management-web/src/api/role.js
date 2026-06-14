@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export const roleApi = {
   /** 分页查询 */
   page(params) {
-    return request.get('/role/page', { params })
+    return request.post('/role/page', params)
   },
 
   /** 查询所有角色（下拉用） */

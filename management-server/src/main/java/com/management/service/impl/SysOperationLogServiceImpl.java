@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.management.dto.QueryDTO;
+import com.management.dto.query.OperationLogQueryDTO;
 import com.management.entity.SysOperationLog;
 import com.management.mapper.SysOperationLogMapper;
 import com.management.service.SysOperationLogService;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class SysOperationLogServiceImpl extends ServiceImpl<SysOperationLogMapper, SysOperationLog> implements SysOperationLogService {
 
     @Override
-    public IPage<SysOperationLog> pageLogs(QueryDTO query) {
+    public IPage<SysOperationLog> pageLogs(OperationLogQueryDTO query) {
         LambdaQueryWrapper<SysOperationLog> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotBlank(query.getKeyword())) {
             wrapper.like(SysOperationLog::getUsername, query.getKeyword())

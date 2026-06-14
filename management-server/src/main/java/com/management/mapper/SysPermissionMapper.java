@@ -21,6 +21,6 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     /**
      * 查询所有状态正常的权限，按排序号升序
      */
-    @Select("SELECT * FROM sys_permission WHERE status = 1 AND deleted = 0 ORDER BY sort_order ASC")
+    @Select("SELECT * FROM sys_permission WHERE status = 1 AND deleted = 0 ORDER BY sort ASC")
     List<SysPermission> selectAllEnabled();
 }

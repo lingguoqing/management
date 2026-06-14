@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export const dictApi = {
   // ---- 字典类型 ----
   pageTypes(params) {
-    return request.get('/dict/type/page', { params })
+    return request.post('/dict/type/page', params)
   },
   createType(data) {
     return request.post('/dict/type', data)
@@ -18,7 +18,7 @@ export const dictApi = {
 
   // ---- 字典数据 ----
   pageData(params) {
-    return request.get('/dict/data/page', { params })
+    return request.post('/dict/data/page', params)
   },
   listByType(dictType) {
     return request.get(`/dict/data/${dictType}`)

@@ -2,8 +2,8 @@ package com.management.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.management.dto.QueryDTO;
 import com.management.dto.RoleDTO;
+import com.management.dto.query.RoleQueryDTO;
 import com.management.entity.SysRole;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public interface SysRoleService extends IService<SysRole> {
 
     /** 分页查询角色列表 */
-    IPage<SysRole> pageRoles(QueryDTO query);
+    IPage<SysRole> pageRoles(RoleQueryDTO query);
 
     /** 新增角色（含权限关联） */
     void createRole(RoleDTO dto);

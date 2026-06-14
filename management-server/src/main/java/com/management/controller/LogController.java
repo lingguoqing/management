@@ -3,8 +3,10 @@ package com.management.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.management.common.PageResult;
+import com.management.common.PageUtils;
 import com.management.common.Result;
-import com.management.dto.QueryDTO;
+import com.management.dto.query.LoginLogQueryDTO;
+import com.management.dto.query.OperationLogQueryDTO;
 import com.management.entity.SysOperationLog;
 import com.management.entity.SysLoginLog;
 import com.management.service.SysOperationLogService;
@@ -27,11 +29,10 @@ public class LogController {
     private final SysLoginLogService loginLogService;
 
     @Operation(summary = "分页查询操作日志")
-    @GetMapping("/operation/page")
+    @PostMapping("/operation/page")
     @SaCheckPermission("sys:log:operation")
-    public Result<PageResult<SysOperationLog>> pageOperation(QueryDTO query) {
-        IPage<SysOperationLog> page = operationLogService.pageLogs(query);
-        return Result.ok(PageResult.of((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(), page.getRecords()));
+    public Result<PageResult<SysOperationLog>> pageOperation(@RequestBody OperationLogQueryDTO query) {
+        return Result.ok(PageUtils.convert(operationLogService.pageLogs(query)));
     }
 
     @Operation(summary = "清空操作日志")
@@ -43,11 +44,10 @@ public class LogController {
     }
 
     @Operation(summary = "分页查询登录日志")
-    @GetMapping("/login/page")
+    @PostMapping("/login/page")
     @SaCheckPermission("sys:log:login")
-    public Result<PageResult<SysLoginLog>> pageLogin(QueryDTO query) {
-        IPage<SysLoginLog> page = loginLogService.pageLogs(query);
-        return Result.ok(PageResult.of((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(), page.getRecords()));
+    public Result<PageResult<SysLoginLog>> pageLogin(@RequestBody LoginLogQueryDTO query) {
+        return Result.ok(PageUtils.convert(loginLogService.pageLogs(query)));
     }
 
     @Operation(summary = "清空登录日志")

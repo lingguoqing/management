@@ -3,8 +3,8 @@ package com.management.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.management.dto.PasswordDTO;
-import com.management.dto.QueryDTO;
 import com.management.dto.UserDTO;
+import com.management.dto.query.UserQueryDTO;
 import com.management.entity.SysUser;
 import com.management.vo.UserInfoVO;
 
@@ -14,7 +14,7 @@ import com.management.vo.UserInfoVO;
 public interface SysUserService extends IService<SysUser> {
 
     /** 分页查询用户列表 */
-    IPage<SysUser> pageUsers(QueryDTO query);
+    IPage<SysUser> pageUsers(UserQueryDTO query);
 
     /** 新增用户（含角色关联） */
     void createUser(UserDTO dto);
