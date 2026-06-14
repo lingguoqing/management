@@ -35,7 +35,7 @@ public class DeptController {
     @Operation(summary = "新增部门")
     @OperLog(module = "部门管理", operation = "新增")
     @PostMapping
-    @SaCheckPermission("sys:dept:list")
+    @SaCheckPermission("sys:dept:add")
     public Result<Void> create(@Valid @RequestBody DeptDTO dto) {
         deptService.createDept(dto);
         return Result.ok();
@@ -44,7 +44,7 @@ public class DeptController {
     @Operation(summary = "修改部门")
     @OperLog(module = "部门管理", operation = "修改")
     @PutMapping
-    @SaCheckPermission("sys:dept:list")
+    @SaCheckPermission("sys:dept:edit")
     public Result<Void> update(@Valid @RequestBody DeptDTO dto) {
         deptService.updateDept(dto);
         return Result.ok();
@@ -53,7 +53,7 @@ public class DeptController {
     @Operation(summary = "删除部门")
     @OperLog(module = "部门管理", operation = "删除")
     @DeleteMapping("/{id}")
-    @SaCheckPermission("sys:dept:list")
+    @SaCheckPermission("sys:dept:delete")
     public Result<Void> delete(@PathVariable Long id) {
         deptService.deleteDept(id);
         return Result.ok();

@@ -4,9 +4,12 @@ import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
 import { permissionApi } from '@/api/permission'
 import { formatDateTime } from '@/utils'
+import { useUserStore } from '@/stores/user'
 import PermForm from './form.vue'
 
 const { t } = useI18n()
+const userStore = useUserStore()
+const hasPermission = userStore.hasPermission
 
 const loading = ref(false)
 const treeData = ref([])
@@ -104,11 +107,11 @@ const columns = [
           </template>
           <template v-if="column.key === 'action'">
             <div class="action-buttons">
-              <a-button v-if="record.type !== 2" type="link" size="small" @click="handleAdd(record)">
+              <a-button v-if="record.type !== 2 && hasPermission('sys:perm:add')" type="link" size="small" @click="handleAdd(record)">
                 添加子级
               </a-button>
-              <a-button type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>
-              <a-popconfirm :title="t('common.deleteConfirm')" @confirm="handleDelete(record.id)">
+              <a-button v-if="hasPermission('sys:perm:edit')" type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>
+              <a-popconfirm v-if="hasPermission('sys:perm:delete')" :title="t('common.deleteConfirm')" @confirm="handleDelete(record.id)">
                 <a-button type="link" size="small" danger>{{ t('common.delete') }}</a-button>
               </a-popconfirm>
             </div>

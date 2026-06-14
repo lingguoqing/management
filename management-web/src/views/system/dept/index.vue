@@ -3,9 +3,12 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
 import { deptApi } from '@/api/dept'
+import { useUserStore } from '@/stores/user'
 import DeptForm from './form.vue'
 
 const { t } = useI18n()
+const userStore = useUserStore()
+const hasPermission = userStore.hasPermission
 
 const loading = ref(false)
 const treeData = ref([])
@@ -78,9 +81,9 @@ const columns = [
           </template>
           <template v-if="column.key === 'action'">
             <div class="action-buttons">
-              <a-button type="link" size="small" @click="handleAdd(record)">添加子级</a-button>
-              <a-button type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>
-              <a-popconfirm :title="t('common.deleteConfirm')" @confirm="handleDelete(record.id)">
+              <a-button v-if="hasPermission('sys:dept:add')" type="link" size="small" @click="handleAdd(record)">添加子级</a-button>
+              <a-button v-if="hasPermission('sys:dept:edit')" type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>
+              <a-popconfirm v-if="hasPermission('sys:dept:delete')" :title="t('common.deleteConfirm')" @confirm="handleDelete(record.id)">
                 <a-button type="link" size="small" danger>{{ t('common.delete') }}</a-button>
               </a-popconfirm>
             </div>

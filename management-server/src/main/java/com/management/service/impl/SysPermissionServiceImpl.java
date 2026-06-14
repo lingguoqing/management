@@ -7,7 +7,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.management.common.exception.BusinessException;
 import com.management.dto.PermissionDTO;
 import com.management.entity.SysPermission;
+import com.management.entity.SysRole;
+import com.management.entity.SysRolePermission;
 import com.management.mapper.SysPermissionMapper;
+import com.management.mapper.SysRoleMapper;
 import com.management.mapper.SysRolePermissionMapper;
 import com.management.mapper.SysUserMapper;
 import com.management.service.SysPermissionService;
@@ -30,6 +33,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     private final SysRolePermissionMapper rolePermissionMapper;
     private final SysUserMapper userMapper;
+    private final SysRoleMapper roleMapper;
 
     @Override
     public List<PermTreeVO> getPermTree() {
@@ -67,6 +71,15 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
         SysPermission perm = BeanUtil.copyProperties(dto, SysPermission.class);
         baseMapper.insert(perm);
+
+        // 自动给超级管理员角色添加该权限
+        SysRole adminRole = roleMapper.selectByRoleCode("admin");
+        if (adminRole != null) {
+            SysRolePermission rp = new SysRolePermission();
+            rp.setRoleId(adminRole.getId());
+            rp.setPermId(perm.getId());
+            rolePermissionMapper.insert(rp);
+        }
     }
 
     @Override

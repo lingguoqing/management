@@ -6,9 +6,12 @@ import { userApi } from '@/api/user'
 import { roleApi } from '@/api/role'
 import { deptApi } from '@/api/dept'
 import { formatDateTime } from '@/utils'
+import { useUserStore } from '@/stores/user'
 import UserForm from './form.vue'
 
 const { t } = useI18n()
+const userStore = useUserStore()
+const hasPermission = userStore.hasPermission
 
 const loading = ref(false)
 const list = ref([])
@@ -136,7 +139,7 @@ const columns = [
     <!-- 表格 -->
     <div class="table-container">
       <div style="padding: 12px 16px; display: flex; justify-content: space-between">
-        <a-button type="primary" @click="handleAdd">{{ t('common.add') }}</a-button>
+        <a-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">{{ t('common.add') }}</a-button>
       </div>
       <a-table
         :columns="columns"
@@ -164,8 +167,9 @@ const columns = [
           </template>
           <template v-if="column.key === 'action'">
             <div class="action-buttons">
-              <a-button type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>
+              <a-button v-if="hasPermission('sys:user:edit')" type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>
               <a-popconfirm
+                v-if="hasPermission('sys:user:delete')"
                 :title="t('common.deleteConfirm')"
                 @confirm="handleDelete(record.id)"
               >

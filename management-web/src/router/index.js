@@ -25,7 +25,8 @@ let routesLoaded = false
 /** Find the first leaf menu path for redirect from / */
 function findFirstMenuPath(menus) {
   for (const item of menus) {
-    if (item.permType === 2 && item.path) return item.path
+    // type=1 is menu, type=0 is directory (workbench/homepage often type=0 with component)
+    if ((item.type === 1 || item.type === 0) && item.path && item.component) return item.path
     if (item.children) {
       const found = findFirstMenuPath(item.children)
       if (found) return found

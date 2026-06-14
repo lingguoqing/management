@@ -4,10 +4,13 @@ import { useI18n } from 'vue-i18n'
 import { message } from 'ant-design-vue'
 import { roleApi } from '@/api/role'
 import { formatDateTime } from '@/utils'
+import { useUserStore } from '@/stores/user'
 import RoleForm from './form.vue'
 import PermModal from './perm-modal.vue'
 
 const { t } = useI18n()
+const userStore = useUserStore()
+const hasPermission = userStore.hasPermission
 
 const loading = ref(false)
 const list = ref([])
@@ -93,7 +96,7 @@ const columns = [
 
     <div class="table-container">
       <div style="padding: 12px 16px">
-        <a-button type="primary" @click="handleAdd">{{ t('common.add') }}</a-button>
+        <a-button v-if="hasPermission('sys:role:add')" type="primary" @click="handleAdd">{{ t('common.add') }}</a-button>
       </div>
       <a-table :columns="columns" :data-source="list" :loading="loading" row-key="id"
         :pagination="{ current: query.page, pageSize: query.pageSize, total, showSizeChanger: true, showTotal: (t) => `共 ${t} 条` }"
@@ -109,9 +112,9 @@ const columns = [
           </template>
           <template v-if="column.key === 'action'">
             <div class="action-buttons">
-              <a-button type="link" size="small" @click="handleAssignPerm(record)">{{ t('role.assignPerm') }}</a-button>
-              <a-button type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>
-              <a-popconfirm :title="t('common.deleteConfirm')" @confirm="handleDelete(record.id)">
+              <a-button v-if="hasPermission('sys:role:assign-perm')" type="link" size="small" @click="handleAssignPerm(record)">{{ t('role.assignPerm') }}</a-button>
+              <a-button v-if="hasPermission('sys:role:edit')" type="link" size="small" @click="handleEdit(record)">{{ t('common.edit') }}</a-button>
+              <a-popconfirm v-if="hasPermission('sys:role:delete')" :title="t('common.deleteConfirm')" @confirm="handleDelete(record.id)">
                 <a-button type="link" size="small" danger>{{ t('common.delete') }}</a-button>
               </a-popconfirm>
             </div>

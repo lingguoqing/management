@@ -118,6 +118,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if (role == null) {
             throw new BusinessException("角色不存在");
         }
+        // 禁止删除超级管理员角色
+        if ("admin".equals(role.getRoleCode())) {
+            throw new BusinessException("超级管理员角色不能删除");
+        }
         baseMapper.deleteById(id);
         rolePermissionMapper.deleteByRoleId(id);
     }

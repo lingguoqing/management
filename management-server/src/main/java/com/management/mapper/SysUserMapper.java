@@ -31,12 +31,19 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     /**
      * 查询用户的菜单权限（仅目录+菜单，不含按钮）
+     * 递归查询：包含直接分配的菜单及其所有父节点，确保能构建完整的菜单树
      */
-    @Select("SELECT DISTINCT p.* FROM sys_permission p " +
-            "INNER JOIN sys_role_permission rp ON p.id = rp.perm_id " +
-            "INNER JOIN sys_user_role ur ON rp.role_id = ur.role_id " +
-            "WHERE ur.user_id = #{userId} AND p.status = 1 AND p.deleted = 0 " +
-            "AND p.type IN (0, 1) AND p.visible = 1 " +
-            "ORDER BY p.sort ASC")
+    @Select("WITH RECURSIVE menu_tree AS (" +
+            "  SELECT p.* FROM sys_permission p " +
+            "  INNER JOIN sys_role_permission rp ON p.id = rp.perm_id " +
+            "  INNER JOIN sys_user_role ur ON rp.role_id = ur.role_id " +
+            "  WHERE ur.user_id = #{userId} AND p.status = 1 AND p.deleted = 0 " +
+            "  AND p.type IN (0, 1) AND p.visible = 1 " +
+            "  UNION " +
+            "  SELECT p.* FROM sys_permission p " +
+            "  INNER JOIN menu_tree mt ON p.id = mt.parent_id " +
+            "  WHERE p.status = 1 AND p.deleted = 0 AND p.type IN (0, 1) AND p.visible = 1" +
+            ") " +
+            "SELECT DISTINCT * FROM menu_tree ORDER BY sort ASC")
     List<com.management.entity.SysPermission> selectMenusByUserId(@Param("userId") Long userId);
 }
